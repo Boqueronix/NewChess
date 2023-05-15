@@ -50,9 +50,9 @@ public class Game {
                     return true;
                 }
             }
-            System.out.println("Deselected");
+//            System.out.println("Deselected");
         } else {
-            System.out.println("Not your turn");
+//            System.out.println("Not your turn");
         }
         //Deselect piece if move fails
         selected = null;
@@ -70,7 +70,7 @@ public class Game {
         } else {
             Board.halfMoveCount++;
             if (Board.halfMoveCount >= 50) {
-                System.out.println("Draw by 50 move rule");
+//                System.out.println("Draw by 50 move rule");
                 gameOn = false;
             }
         }

@@ -46,6 +46,6 @@ public class Move {
     }
     //String representation of the move
     public String toString(){
-        return piece + " " + col + " " + row;
+        return piece + " " + col + " " + row + " Value: " + value;
     }
 }

@@ -333,7 +333,7 @@ public class Piece {
                 if (!Board.enPassant.equals("-")){
                     enPassantCol = Board.enPassant.charAt(0) - 97;
                     enPassantRow = Integer.parseInt(Board.enPassant.substring(1)) - 1;
-                    System.out.println(enPassantCol + " " + enPassantRow);
+//                    System.out.println(enPassantCol + " " + enPassantRow);
                 }
                 if (color == COLOR.WHITE) {
                     if ((col - 1 == enPassantCol || col + 1 == enPassantCol) && row + 1 == enPassantRow) {
@@ -369,6 +369,9 @@ public class Piece {
                     }
                 }
             }
+        }
+        for (Move move : moves) {
+            System.out.println(move);
         }
         return moves;
     }

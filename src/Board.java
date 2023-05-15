@@ -84,6 +84,6 @@ public class Board {
         }
         fen += " " + ((Game.turn == COLOR.WHITE)? "w": "b") + " KQkq " + enPassant + " " + halfMoveCount + " " + moveCount;
         FEN = fen;
-        System.out.println(FEN);
+//        System.out.println(FEN);
     }
 }
