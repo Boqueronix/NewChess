@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class Game {
     //is the game running?
@@ -11,6 +13,7 @@ public class Game {
     public static ArrayList<Move> moves = new ArrayList<>();
     //Active player
     public static COLOR turn = COLOR.WHITE;
+    public static int difficulty = 5;
     public static void main(String[] args) {
         StdDraw.enableDoubleBuffering();
         StdDraw.setScale(-0.5,7.5);
@@ -22,7 +25,9 @@ public class Game {
                 if (selected == null) {
                     select(StdDraw.mouseX(), StdDraw.mouseY());
                 } else {
-                    attempt(StdDraw.mouseX(), StdDraw.mouseY());
+                    if (attempt(StdDraw.mouseX(), StdDraw.mouseY())){
+                        bot();
+                    }
                 }
             } else if (!StdDraw.isMousePressed() && mousePressed) {
                 mousePressed = false;
@@ -61,11 +66,11 @@ public class Game {
         return false;
     }
     public static void move(Move move){
-        System.out.println(move.value);
+//        System.out.println(move.value);
         //Update move count
         Board.moveCount++;
         //Update half move count for 50 move rule
-        if (Board.board[move.row][move.col] != null || selected.type == TYPE.PAWN) {
+        if (Board.board[move.row][move.col] != null || move.piece.type == TYPE.PAWN) {
             Board.halfMoveCount = 0;
         } else {
             Board.halfMoveCount++;
@@ -75,18 +80,18 @@ public class Game {
             }
         }
         //Check for en passant
-        if (selected.type == TYPE.PAWN && Math.abs(move.row - selected.row) == 2) {
-            Board.enPassant = (char) (move.col + 'a') + String.valueOf(1 + (move.row + selected.row) /2);
+        if (move.piece.type == TYPE.PAWN && Math.abs(move.row - move.piece.row) == 2) {
+            Board.enPassant = (char) (move.col + 'a') + String.valueOf(1 + (move.row + move.piece.row) /2);
         } else {
             Board.enPassant = "-";
         }
         //Move piece
-        Board.board[move.row][move.col] = selected;
-        Board.board[selected.row][selected.col] = null;
-        selected.col = move.col;
-        selected.row = move.row;
+        Board.board[move.row][move.col] = move.piece;
+        Board.board[move.piece.row][move.piece.col] = null;
+        move.piece.col = move.col;
+        move.piece.row = move.row;
         if (move.enPassant) {
-            Board.board[move.row + ((selected.color == COLOR.WHITE)? -1: 1)][move.col] = null;
+            Board.board[move.row + ((move.piece.color == COLOR.WHITE)? -1: 1)][move.col] = null;
         }
         //Deselect piece
         selected = null;
@@ -96,5 +101,31 @@ public class Game {
         //Update FEN and draw
         Board.updateFEN();
         Board.draw();
+    }
+    public static void bot(){
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                if (Board.board[row][col] != null && Board.board[row][col].color == turn){
+                    moves.addAll(Board.board[row][col].getMoves());
+                }
+            }
+        }
+        if (moves.size() == 0) { endgame();}
+        HashMap<Move, Integer> values = new HashMap<>();
+        int min = Integer.MAX_VALUE;
+        for (Move m: moves){
+            values.put(m, m.genFutureValue(Board.board, difficulty));
+            if (values.get(m) < min) { min = values.get(m); }
+        }
+        while (true){
+            Move m = moves.get((int) (Math.random() * moves.size()));
+            if (values.get(m) == min){
+                move(m);
+                break;
+            }
+        }
+    }
+    public static void endgame(){
+        gameOn = false;
     }
 }

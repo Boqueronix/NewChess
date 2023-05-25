@@ -342,10 +342,10 @@ public class Piece {
                     if (row + 1 < 8 && Board.board[row + 1][col] == null) {
                         moves.add(new Move(this, col, row + 1));
                     }
-                    if (col - 1 > 0 && Board.board[row + 1][col - 1] != null && Board.board[row + 1][col - 1].color == COLOR.BLACK) {
+                    if (col - 1 >= 0 && row + 1 < 8 && Board.board[row + 1][col - 1] != null && Board.board[row + 1][col - 1].color == COLOR.BLACK) {
                         moves.add(new Move(this, col - 1, row + 1));
                     }
-                    if (col + 1 < 8 && Board.board[row + 1][col + 1] != null && Board.board[row + 1][col + 1].color == COLOR.BLACK) {
+                    if (col + 1 < 8 && row + 1 < 8 && Board.board[row + 1][col + 1] != null && Board.board[row + 1][col + 1].color == COLOR.BLACK) {
                         moves.add(new Move(this, col + 1, row + 1));
                     }
                     if (row == 1 && Board.board[row + 2][col] == null) {
@@ -358,10 +358,10 @@ public class Piece {
                     if (row - 1 >= 0 && Board.board[row - 1][col] == null) {
                         moves.add(new Move(this, col, row - 1));
                     }
-                    if (col - 1 > 0 && Board.board[row - 1][col - 1] != null && Board.board[row - 1][col - 1].color == COLOR.WHITE) {
+                    if (col - 1 >= 0 && row - 1 >= 0 && Board.board[row - 1][col - 1] != null && Board.board[row - 1][col - 1].color == COLOR.WHITE) {
                         moves.add(new Move(this, col - 1, row - 1));
                     }
-                    if (col + 1 < 8 && Board.board[row - 1][col + 1] != null && Board.board[row - 1][col + 1].color == COLOR.WHITE) {
+                    if (col + 1 < 8 && row - 1 > 0 && Board.board[row - 1][col + 1] != null && Board.board[row - 1][col + 1].color == COLOR.WHITE) {
                         moves.add(new Move(this, col + 1, row - 1));
                     }
                     if (row == 6 && Board.board[row - 2][col] == null) {
@@ -371,7 +371,7 @@ public class Piece {
             }
         }
         for (Move move : moves) {
-            System.out.println(move);
+//            System.out.println(move);
         }
         return moves;
     }
