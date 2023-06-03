@@ -7,7 +7,7 @@ public class Board {
     public static String enPassant = "-";
 
     // FEN Board Notation : https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation
-    public static String FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+    public static String FEN = "2k5/8/8/6R1/8/8/8/3K2r1 w - - 0 1";
     // 2D Array of Pieces representing the board
     public static Piece[][] board = new Piece[8][8];
 

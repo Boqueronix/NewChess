@@ -48,7 +48,13 @@ public class Piece {
     public void draw(){
         StdDraw.setPenColor((color == COLOR.WHITE)? Color.RED: Color.BLACK);
         switch (type) {
-            case ROOK -> StdDraw.text(col, row, "R");
+            case ROOK -> {
+                if ((color != COLOR.WHITE)) {
+                    StdDraw.picture(col, row, "rook.png", 1, 1);
+                } else {
+                    StdDraw.picture(col, row, "rookw.png", 1, 1);
+                }
+            }
             case KNIGHT -> StdDraw.text(col, row, "N");
             case BISHOP -> StdDraw.text(col, row, "B");
             case QUEEN -> StdDraw.text(col, row, "Q");
@@ -57,15 +63,15 @@ public class Piece {
         }
     }
     //Returns a list of all possible moves for the piece
-    public ArrayList<Move> getMoves(){
+    public ArrayList<Move> getMoves(Piece [][] board){
         ArrayList<Move> moves = new ArrayList<>();
         switch (type) {
             case ROOK -> {
                 //Checks for moves to the right
                 for (int col = this.col + 1; col < 8; col++) {
-                    if (Board.board[row][col] == null) {
+                    if (board[row][col] == null) {
                         moves.add(new Move(this, col, row));
-                    } else if (Board.board[row][col].color != this.color) {
+                    } else if (board[row][col].color != this.color) {
                         moves.add(new Move(this, col, row));
                         break;
                     } else {
@@ -73,10 +79,10 @@ public class Piece {
                     }
                 }
                 //Checks for moves to the left
-                for (int col = this.col - 1; col > 0; col--) {
-                    if (Board.board[row][col] == null) {
+                for (int col = this.col - 1; col >= 0; col--) {
+                    if (board[row][col] == null) {
                         moves.add(new Move(this, col, row));
-                    } else if (Board.board[row][col].color != this.color) {
+                    } else if (board[row][col].color != this.color) {
                         moves.add(new Move(this, col, row));
                         break;
                     } else {
@@ -85,9 +91,9 @@ public class Piece {
                 }
                 //Checks for moves upwards
                 for (int row = this.row + 1; row < 8; row++) {
-                    if (Board.board[row][col] == null) {
+                    if (board[row][col] == null) {
                         moves.add(new Move(this, col, row));
-                    } else if (Board.board[row][col].color != this.color) {
+                    } else if (board[row][col].color != this.color) {
                         moves.add(new Move(this, col, row));
                         break;
                     } else {
@@ -95,10 +101,10 @@ public class Piece {
                     }
                 }
                 //Checks for moves downwards
-                for (int row = this.row - 1; row > 0; row--) {
-                    if (Board.board[row][col] == null) {
+                for (int row = this.row - 1; row >= 0; row--) {
+                    if (board[row][col] == null) {
                         moves.add(new Move(this, col, row));
-                    } else if (Board.board[row][col].color != this.color) {
+                    } else if (board[row][col].color != this.color) {
                         moves.add(new Move(this, col, row));
                         break;
                     } else {
@@ -107,28 +113,28 @@ public class Piece {
                 }
             }
             case KNIGHT -> {
-                if ((col + 2 < 8 && row + 1 < 8) && (Board.board[row + 1][col + 2] == null || Board.board[row + 1][col + 2].color != this.color)) {
+                if ((col + 2 < 8 && row + 1 < 8) && (board[row + 1][col + 2] == null || board[row + 1][col + 2].color != this.color)) {
                     moves.add(new Move(this, col + 2, row + 1));
                 }
-                if ((col - 2 > -1 && row + 1 < 8) && (Board.board[row + 1][col - 2] == null || Board.board[row + 1][col - 2].color != this.color)) {
+                if ((col - 2 > -1 && row + 1 < 8) && (board[row + 1][col - 2] == null || board[row + 1][col - 2].color != this.color)) {
                     moves.add(new Move(this, col - 2, row + 1));
                 }
-                if ((col + 2 < 8 && row - 1 > -1) && (Board.board[row - 1][col + 2] == null || Board.board[row - 1][col + 2].color != this.color)) {
+                if ((col + 2 < 8 && row - 1 > -1) && (board[row - 1][col + 2] == null || board[row - 1][col + 2].color != this.color)) {
                     moves.add(new Move(this, col + 2, row - 1));
                 }
-                if ((col - 2 > -1 && row - 1 > 1) && (Board.board[row - 1][col - 2] == null || Board.board[row - 1][col - 2].color != this.color)) {
+                if ((col - 2 > -1 && row - 1 > 1) && (board[row - 1][col - 2] == null || board[row - 1][col - 2].color != this.color)) {
                     moves.add(new Move(this, col - 2, row - 1));
                 }
-                if ((col + 1 < 8 && row + 2 < 8) && (Board.board[row + 2][col + 1] == null || Board.board[row + 2][col + 1].color != this.color)) {
+                if ((col + 1 < 8 && row + 2 < 8) && (board[row + 2][col + 1] == null || board[row + 2][col + 1].color != this.color)) {
                     moves.add(new Move(this, col + 1, row + 2));
                 }
-                if ((col - 1 > -1 && row + 2 < 8) && (Board.board[row + 2][col - 1] == null || Board.board[row + 2][col - 1].color != this.color)) {
+                if ((col - 1 > -1 && row + 2 < 8) && (board[row + 2][col - 1] == null || board[row + 2][col - 1].color != this.color)) {
                     moves.add(new Move(this, col - 1, row + 2));
                 }
-                if ((col + 1 < 8 && row - 2 > -1) && (Board.board[row - 2][col + 1] == null || Board.board[row - 2][col + 1].color != this.color)) {
+                if ((col + 1 < 8 && row - 2 > -1) && (board[row - 2][col + 1] == null || board[row - 2][col + 1].color != this.color)) {
                     moves.add(new Move(this, col + 1, row - 2));
                 }
-                if ((col - 1 > -1 && row - 2 > -1) && (Board.board[row - 2][col - 1] == null || Board.board[row - 2][col - 1].color != this.color)) {
+                if ((col - 1 > -1 && row - 2 > -1) && (board[row - 2][col - 1] == null || board[row - 2][col - 1].color != this.color)) {
                     moves.add(new Move(this, col - 1, row - 2));
                 }
 
@@ -138,9 +144,9 @@ public class Piece {
                 int c = col + 1;
                 int r = row + 1;
                 while (c < 8 && r < 8) {
-                    if (Board.board[r][c] == null) {
+                    if (board[r][c] == null) {
                         moves.add(new Move(this, c, r));
-                    } else if (Board.board[r][c].color != this.color) {
+                    } else if (board[r][c].color != this.color) {
                         moves.add(new Move(this, c, r));
                         break;
                     } else {
@@ -153,9 +159,9 @@ public class Piece {
                 c = col - 1;
                 r = row + 1;
                 while (c >= 0 && r < 8) {
-                    if (Board.board[r][c] == null) {
+                    if (board[r][c] == null) {
                         moves.add(new Move(this, c, r));
-                    } else if (Board.board[r][c].color != this.color) {
+                    } else if (board[r][c].color != this.color) {
                         moves.add(new Move(this, c, r));
                         break;
                     } else {
@@ -168,9 +174,9 @@ public class Piece {
                 c = col + 1;
                 r = row - 1;
                 while (c < 8 && r >= 0) {
-                    if (Board.board[r][c] == null) {
+                    if (board[r][c] == null) {
                         moves.add(new Move(this, c, r));
-                    } else if (Board.board[r][c].color != this.color) {
+                    } else if (board[r][c].color != this.color) {
                         moves.add(new Move(this, c, r));
                         break;
                     } else {
@@ -183,9 +189,9 @@ public class Piece {
                 c = col - 1;
                 r = row - 1;
                 while (c >= 0 && r >= 0) {
-                    if (Board.board[r][c] == null) {
+                    if (board[r][c] == null) {
                         moves.add(new Move(this, c, r));
-                    } else if (Board.board[r][c].color != this.color) {
+                    } else if (board[r][c].color != this.color) {
                         moves.add(new Move(this, c, r));
                         break;
                     } else {
@@ -198,9 +204,9 @@ public class Piece {
             case QUEEN -> {
                 // Check right
                 for (int col = this.col + 1; col < 8; col++) {
-                    if (Board.board[row][col] == null) {
+                    if (board[row][col] == null) {
                         moves.add(new Move(this, col, row));
-                    } else if (Board.board[row][col].color != this.color) {
+                    } else if (board[row][col].color != this.color) {
                         moves.add(new Move(this, col, row));
                         break;
                     } else {
@@ -209,9 +215,9 @@ public class Piece {
                 }
                 // Check left
                 for (int col = this.col - 1; col > 0; col--) {
-                    if (Board.board[row][col] == null) {
+                    if (board[row][col] == null) {
                         moves.add(new Move(this, col, row));
-                    } else if (Board.board[row][col].color != this.color) {
+                    } else if (board[row][col].color != this.color) {
                         moves.add(new Move(this, col, row));
                         break;
                     } else {
@@ -220,9 +226,9 @@ public class Piece {
                 }
                 // Check up
                 for (int row = this.row + 1; row < 8; row++) {
-                    if (Board.board[row][col] == null) {
+                    if (board[row][col] == null) {
                         moves.add(new Move(this, col, row));
-                    } else if (Board.board[row][col].color != this.color) {
+                    } else if (board[row][col].color != this.color) {
                         moves.add(new Move(this, col, row));
                         break;
                     } else {
@@ -231,9 +237,9 @@ public class Piece {
                 }
                 // Check down
                 for (int row = this.row - 1; row > 0; row--) {
-                    if (Board.board[row][col] == null) {
+                    if (board[row][col] == null) {
                         moves.add(new Move(this, col, row));
-                    } else if (Board.board[row][col].color != this.color) {
+                    } else if (board[row][col].color != this.color) {
                         moves.add(new Move(this, col, row));
                         break;
                     } else {
@@ -244,9 +250,9 @@ public class Piece {
                 int co = col + 1;
                 int ro = row + 1;
                 while (co < 8 && ro < 8) {
-                    if (Board.board[ro][co] == null) {
+                    if (board[ro][co] == null) {
                         moves.add(new Move(this, co, ro));
-                    } else if (Board.board[ro][co].color != this.color) {
+                    } else if (board[ro][co].color != this.color) {
                         moves.add(new Move(this, co, ro));
                         break;
                     } else {
@@ -259,9 +265,9 @@ public class Piece {
                 co = col - 1;
                 ro = row + 1;
                 while (co >= 0 && ro < 8) {
-                    if (Board.board[ro][co] == null) {
+                    if (board[ro][co] == null) {
                         moves.add(new Move(this, co, ro));
-                    } else if (Board.board[ro][co].color != this.color) {
+                    } else if (board[ro][co].color != this.color) {
                         moves.add(new Move(this, co, ro));
                         break;
                     } else {
@@ -274,9 +280,9 @@ public class Piece {
                 co = col + 1;
                 ro= row - 1;
                 while (co < 8 && ro >= 0) {
-                    if (Board.board[ro][co] == null) {
+                    if (board[ro][co] == null) {
                         moves.add(new Move(this, co, ro));
-                    } else if (Board.board[ro][co].color != this.color) {
+                    } else if (board[ro][co].color != this.color) {
                         moves.add(new Move(this, co, ro));
                         break;
                     } else {
@@ -289,9 +295,9 @@ public class Piece {
                 co = col - 1;
                 ro = row - 1;
                 while (co >= 0 && ro >= 0) {
-                    if (Board.board[ro][co] == null) {
+                    if (board[ro][co] == null) {
                         moves.add(new Move(this, co, ro));
-                    } else if (Board.board[ro][co].color != this.color) {
+                    } else if (board[ro][co].color != this.color) {
                         moves.add(new Move(this, co, ro));
                         break;
                     } else {
@@ -302,28 +308,28 @@ public class Piece {
                 }
             }
             case KING -> {
-                if (row + 1 < 8 && (Board.board[row + 1][col] == null || Board.board[row + 1][col].color != this.color)) {
+                if (row + 1 < 8 && (board[row + 1][col] == null || board[row + 1][col].color != this.color)) {
                     moves.add(new Move(this, col, row + 1));
                 }
-                if (row + 1 < 8 && col + 1 < 8 && (Board.board[row + 1][col + 1] == null || Board.board[row + 1][col + 1].color != this.color)) {
+                if (row + 1 < 8 && col + 1 < 8 && (board[row + 1][col + 1] == null || board[row + 1][col + 1].color != this.color)) {
                     moves.add(new Move(this, col + 1, row + 1));
                 }
-                if (col + 1 < 8 && (Board.board[row][col + 1] == null || Board.board[row][col + 1].color != this.color)) {
+                if (col + 1 < 8 && (board[row][col + 1] == null || board[row][col + 1].color != this.color)) {
                     moves.add(new Move(this, col + 1, row));
                 }
-                if (row - 1 >= 0 && col + 1 < 8 && (Board.board[row - 1][col + 1] == null || Board.board[row - 1][col + 1].color != this.color)) {
+                if (row - 1 >= 0 && col + 1 < 8 && (board[row - 1][col + 1] == null || board[row - 1][col + 1].color != this.color)) {
                     moves.add(new Move(this, col + 1, row - 1));
                 }
-                if (row - 1 >= 0 && (Board.board[row - 1][col] == null || Board.board[row - 1][col].color != this.color)) {
+                if (row - 1 >= 0 && (board[row - 1][col] == null || board[row - 1][col].color != this.color)) {
                     moves.add(new Move(this, col, row - 1));
                 }
-                if (row - 1 >= 0 && col - 1 >= 0 && (Board.board[row - 1][col - 1] == null || Board.board[row - 1][col - 1].color != this.color)) {
+                if (row - 1 >= 0 && col - 1 >= 0 && (board[row - 1][col - 1] == null || board[row - 1][col - 1].color != this.color)) {
                     moves.add(new Move(this, col - 1, row - 1));
                 }
-                if (col - 1 >= 0 && (Board.board[row][col - 1] == null || Board.board[row][col - 1].color != this.color)) {
+                if (col - 1 >= 0 && (board[row][col - 1] == null || board[row][col - 1].color != this.color)) {
                     moves.add(new Move(this, col - 1, row));
                 }
-                if (row + 1 < 8 && col - 1 >= 0 && (Board.board[row + 1][col - 1] == null || Board.board[row + 1][col - 1].color != this.color)) {
+                if (row + 1 < 8 && col - 1 >= 0 && (board[row + 1][col - 1] == null || board[row + 1][col - 1].color != this.color)) {
                     moves.add(new Move(this, col - 1, row + 1));
                 }
             }
@@ -339,40 +345,38 @@ public class Piece {
                     if ((col - 1 == enPassantCol || col + 1 == enPassantCol) && row + 1 == enPassantRow) {
                         moves.add(new Move(this, enPassantCol, enPassantRow, true));
                     }
-                    if (row + 1 < 8 && Board.board[row + 1][col] == null) {
+                    if (row + 1 < 8 && board[row + 1][col] == null) {
                         moves.add(new Move(this, col, row + 1));
                     }
-                    if (col - 1 >= 0 && row + 1 < 8 && Board.board[row + 1][col - 1] != null && Board.board[row + 1][col - 1].color == COLOR.BLACK) {
+                    if (col - 1 >= 0 && row + 1 < 8 && board[row + 1][col - 1] != null && board[row + 1][col - 1].color == COLOR.BLACK) {
                         moves.add(new Move(this, col - 1, row + 1));
                     }
-                    if (col + 1 < 8 && row + 1 < 8 && Board.board[row + 1][col + 1] != null && Board.board[row + 1][col + 1].color == COLOR.BLACK) {
+                    if (col + 1 < 8 && row + 1 < 8 && board[row + 1][col + 1] != null && board[row + 1][col + 1].color == COLOR.BLACK) {
                         moves.add(new Move(this, col + 1, row + 1));
                     }
-                    if (row == 1 && Board.board[row + 2][col] == null) {
+                    if (row == 1 && board[row + 2][col] == null) {
                         moves.add(new Move(this, col, row + 2));
                     }
                 } else {
                     if ((col - 1 == enPassantCol || col + 1 == enPassantCol) && row - 1 == enPassantRow) {
                         moves.add(new Move(this, enPassantCol, enPassantRow, true));
                     }
-                    if (row - 1 >= 0 && Board.board[row - 1][col] == null) {
+                    if (row - 1 >= 0 && board[row - 1][col] == null) {
                         moves.add(new Move(this, col, row - 1));
                     }
-                    if (col - 1 >= 0 && row - 1 >= 0 && Board.board[row - 1][col - 1] != null && Board.board[row - 1][col - 1].color == COLOR.WHITE) {
+                    if (col - 1 >= 0 && row - 1 >= 0 && board[row - 1][col - 1] != null && board[row - 1][col - 1].color == COLOR.WHITE) {
                         moves.add(new Move(this, col - 1, row - 1));
                     }
-                    if (col + 1 < 8 && row - 1 > 0 && Board.board[row - 1][col + 1] != null && Board.board[row - 1][col + 1].color == COLOR.WHITE) {
+                    if (col + 1 < 8 && row - 1 > 0 && board[row - 1][col + 1] != null && board[row - 1][col + 1].color == COLOR.WHITE) {
                         moves.add(new Move(this, col + 1, row - 1));
                     }
-                    if (row == 6 && Board.board[row - 2][col] == null) {
+                    if (row == 6 && board[row - 2][col] == null) {
                         moves.add(new Move(this, col, row - 2));
                     }
                 }
             }
         }
-        for (Move move : moves) {
-//            System.out.println(move);
-        }
+
         return moves;
     }
     //Returns the piece's FEN representation

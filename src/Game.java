@@ -13,7 +13,7 @@ public class Game {
     public static ArrayList<Move> moves = new ArrayList<>();
     //Active player
     public static COLOR turn = COLOR.WHITE;
-    public static int difficulty = 5;
+    public static int difficulty = 3;
     public static void main(String[] args) {
         StdDraw.enableDoubleBuffering();
         StdDraw.setScale(-0.5,7.5);
@@ -39,7 +39,13 @@ public class Game {
         if (Board.board[(int) (y + 0.5)][(int) (x + 0.5)] != null) {
             selected = Board.board[(int) (y + 0.5)][(int) (x + 0.5)];
             //Show possible moves
-            moves = selected.getMoves();
+            moves = selected.getMoves(Board.board);
+            for (int i = moves.size()-1;i>=0;i--) {
+                if(!moves.get(i).isCheck()){
+                    moves.remove(i);
+                }
+//            System.out.println(move);
+            }
             for (Move move : moves) {
                 move.highlight();
                 StdDraw.show();
@@ -50,7 +56,7 @@ public class Game {
         //If it's that player's turn and the attempt is within the list of possible moves, move the piece
         if (selected.color == turn) {
             for (Move move : moves) {
-                if (move.col == (int) (x + 0.5) && move.row == (int) (y + 0.5)) {
+                if (move.col == (int) (x + 0.5) && move.row == (int) (y + 0.5) && move.isCheck()) {
                     move(move);
                     return true;
                 }
@@ -106,7 +112,7 @@ public class Game {
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 if (Board.board[row][col] != null && Board.board[row][col].color == turn){
-                    moves.addAll(Board.board[row][col].getMoves());
+                    moves.addAll(Board.board[row][col].getMoves(Board.board));
                 }
             }
         }
